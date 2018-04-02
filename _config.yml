@@ -1,0 +1,39 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+
+# Setup
+title:               "moto's blog"
+tagline:             "Some experiments on Machine Learning."
+url:                 https://mthrok.github.io
+paginate:            1
+baseurl:             /ml-blog
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              moto
+  url:               https://github.com/mthrok
+  email:             mthrok@gmail.com
+
+# Custom vars
+version:             2.0.0
+github:
+  repo:              https://github.com/mthrok
+
+# Gems
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+
+
+pages_list:
+  About: '/ml-blog/about'
+  Archive: '/ml-blog/archive'

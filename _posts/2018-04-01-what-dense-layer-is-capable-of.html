@@ -1,0 +1,108 @@
+---
+layout: post
+title:  "What Dense Layer is Capable of"
+date:   2018-04-01 00:00:00 +0000
+categories: deep_learning
+---
+
+<p>
+Building a new model in Deep Learning is not easy. Figuring out why a model is not acting as expected is difficult. It is important to know how what each component is capable of. Dense layer is one of the most fundamental component of Machine Learning. Here, we explore what it is capable of through series of simple and easy-to-interpret experiments.
+</p>
+
+<h1>Problem</h1>
+<p>
+Let's consider a model that maps one-hot vectors into indices.
+</p>
+
+<center>
+<img src="/ml-blog/assets/2018-04-01/fig1.svg" alt="[[1 0 0][0 1 0][0 0 1]] -> [1 2 3]">
+</center>
+
+<p>
+This can be formulated as linear regression. It is easy to write this mapping in equation.
+</p>
+
+<center>
+<img src="/ml-blog/assets/2018-04-01/fig2.svg" alt="X*[1 2 3] -> y">
+</center>
+
+<p>
+And there are different ways to express the same mapping.
+</p>
+
+<center>
+<img src="/ml-blog/assets/2018-04-01/fig3.svg" alt="X*[-1 0 1] + [2 2 2] -> y">
+</center>
+
+<h1>Experiment</h1>
+
+<p>
+This simple linear transformation is called Dense Layer or Fully-Connected Layer in Deep Learning, and in Tensorflow such model can be written as follow.
+</p>
+
+{% highlight python %}
+output_variable = tf.layers.dense(
+    input_variablbe, units=3, activation=None, use_bias=use_bias)
+{% endhighlight %}
+
+<p>
+Simple gradient descent is enough for finding the optima. The following figure illustrates the model output through the training, with different loss type and bias condition.
+</p>
+<br>
+<center>
+  <iframe
+    width="630" height="680" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-01/linear-regression-encoder-1d-plot.html">
+  </iframe>
+</center>
+
+<p><center><small>
+      How a simple linear regression learns over the time. <br>
+      <b>Loss</b> indicates the type of loss function; L1 or L2.<br>
+      <b>Bias</b> indicates the initial bias value when used. <br>
+      <b>Shuffle</b> indicates that input-to-output mapping was <br>
+      shuffled in deterministic way the training data. <br>
+      You can click legend to hide/show the corresponding plot.
+</small></center></p>
+
+<h2>Observation</h2>
+
+There are couple of interesting this we can observe.
+
+<ul>
+  <li><b>Bias learns faster than kernel.</b></li>
+  <p>
+    Bias terms converge to optima before kernel terms do.<br>
+    You can disable plots other than <i>Loss: L2, Bias: [0.]</i> to see this.
+  </p>
+  <li><b>Existence of bias does not affect the speed kernel fits.</b></li>
+  <p>
+    Comparing the same loss type with/without bias term, the step model converges to the optima is same. <br>
+    This can be better visualized with loss plot. (TODO: Add this plot.)
+  </p>
+  <li><b>Model cannot truely converge to optima when L1 loss is used.</b></li>
+  <p>
+    With L1 loss, derivetive value is always constant and when that value is larger than the actual error, parameters keep crossing the optimal value and fructuates.
+  </p>
+  <li><b>Shuffling the output axis in arbitrary order does not affect model training.</b></li>
+  <p>
+    When label values are shuffled in arbibtrary order, model training is not affected.
+  </p>
+</ul>
+
+<h1>Extention</h1>
+
+<p>
+Extending this to multi dimension, we get the same property on each axis independently.
+</p>
+
+<center>
+<img src="/ml-blog/assets/2018-04-01/fig4.svg" alt="[[1 0 0, 0 1 0][1 0 0, 0 0 1][0 0 1, 1 0 0]] -> [[1 2][1 3][3 1]]">
+</center>
+
+<center>
+  <iframe
+    width="630" height="680" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-01/linear-regression-encoder-2d-plot.html">
+  </iframe>
+</center>
