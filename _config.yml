@@ -5,7 +5,7 @@ permalink:           pretty
 
 # Setup
 title:               "moto's blog"
-tagline:             "Some experiments on Machine Learning."
+tagline:             "Notes on Machine Learning."
 url:                 https://mthrok.github.io
 paginate:            1
 baseurl:             /ml-blog
@@ -28,12 +28,12 @@ version:             2.0.0
 github:
   repo:              https://github.com/mthrok
 
-# Gems
-gems:
+# Pulgins
+plugins:
   - jekyll-paginate
   - jekyll-gist
 
-
+# Page list
 pages_list:
   About: '/ml-blog/about'
   Archive: '/ml-blog/archive'
