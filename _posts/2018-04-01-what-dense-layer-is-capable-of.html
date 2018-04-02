@@ -9,7 +9,7 @@ categories: deep_learning
 Building a new model in Deep Learning is not easy. Figuring out why a model is not acting as expected is difficult. It is important to know how what each component is capable of. Dense layer is one of the most fundamental component of Machine Learning. Here, we explore what it is capable of through series of simple and easy-to-interpret experiments.
 </p>
 
-<h1>Problem</h1>
+<h2>Problem</h2>
 <p>
 Let's consider a model that maps one-hot vectors into indices.
 </p>
@@ -34,7 +34,7 @@ And there are different ways to express the same mapping.
 <img src="/ml-blog/assets/2018-04-01/fig3.svg" alt="X*[-1 0 1] + [2 2 2] -> y">
 </center>
 
-<h1>Experiment</h1>
+<h2>Experiment</h2>
 
 <p>
 This simple linear transformation is called Dense Layer or Fully-Connected Layer in Deep Learning, and in Tensorflow such model can be written as follow.
@@ -90,7 +90,7 @@ There are couple of interesting this we can observe.
   </p>
 </ul>
 
-<h1>Extention</h1>
+<h2>Extention</h2>
 
 <p>
 Extending this to multi dimension, we get the same property on each axis independently.
@@ -106,3 +106,10 @@ Extending this to multi dimension, we get the same property on each axis indepen
     src="/ml-blog/assets/2018-04-01/linear-regression-encoder-2d-plot.html">
   </iframe>
 </center>
+
+<h2>Next</h2>
+
+In the next blog entry, we will explore the revese operation of linear regression, using Dense layer.
+
+<h2>Comments</h2>
+{% include github_comment.html issue="2" %}
