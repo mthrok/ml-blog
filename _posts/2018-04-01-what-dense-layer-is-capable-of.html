@@ -77,7 +77,7 @@ This simple linear transformation is called Dense Layer or Fully-Connected Layer
 
 {% highlight python %}
 output_variable = tf.layers.dense(
-    input_variablbe, units=3, activation=None, use_bias=use_bias)
+    input_variablbe, units=n_dim, activation=None, use_bias=use_bias)
 {% endhighlight %}
 
 <p>
@@ -85,9 +85,25 @@ You can find the code for the experiment <a href="https://github.com/mthrok/ml-b
 </p>
 
 <p>
-Simple gradient descent is enough for finding the optima. The following figure illustrates the model output through the training, with different loss type and bias condition.
+  Simple gradient descent is enough for finding the optima. The following figure shows training loss with different loss type and bias condition for 15 dimension case.
 </p>
-<br>
+
+<center>
+  <iframe
+    width="630" height="620" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-01/linear-regression-encoder-1d-loss-plot.html">
+  </iframe>
+  <div style="padding-bottom: 1em;">
+    <small>
+      Loss value over training. <i>Loss</i> indicates the type of loss function; L1 or L2. <i>Bias</i> indicates the initial bias value when used. <i>Shuffle</i> indicates that input-to-output mapping was shuffled in deterministic way the training data. <br>You can click legend to hide/show the corresponding plot.
+    </small>
+  </div>
+</center>
+
+<p>
+  The following figure illustrates the model output through the training.
+</p>
+
 <center>
   <iframe
     width="630" height="680" align="middle" frameborder="0"
@@ -97,11 +113,6 @@ Simple gradient descent is enough for finding the optima. The following figure i
 
 <p><center><small>
       How a simple linear regression learns over the time. <br>
-      <b>Loss</b> indicates the type of loss function; L1 or L2.<br>
-      <b>Bias</b> indicates the initial bias value when used. <br>
-      <b>Shuffle</b> indicates that input-to-output mapping was <br>
-      shuffled in deterministic way the training data. <br>
-      You can click legend to hide/show the corresponding plot.
 </small></center></p>
 
 <h2>Observation</h2>
@@ -117,7 +128,7 @@ There are couple of interesting this we can observe.
   <li><b>Existence of bias does not affect the speed kernel fits.</b></li>
   <p>
     Comparing the same loss type with/without bias term, the step model converges to the optima is same. <br>
-    This can be better visualized with loss plot. (TODO: Add this plot.)
+    In fact the loss curve of <i>Bias: [0,]</i> starts at the same loss as <i>Bias: None</i> but quickly merges to <i>Bias: [6.]</i>. For L2 loss types, all the training cases converge around 1000 trainings. Using optimizer with moving average will probably yield a different result.
   </p>
   <li><b>Model cannot truely converge to optima when L1 loss is used.</b></li>
   <p>
@@ -157,6 +168,13 @@ $$
 [3 & 1]
 \end{bmatrix}
 $$
+
+<center>
+  <iframe
+    width="630" height="680" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-01/linear-regression-encoder-2d-loss-plot.html">
+  </iframe>
+</center>
 
 <center>
   <iframe
