@@ -32,6 +32,7 @@ github:
 plugins:
   - jekyll-paginate
   - jekyll-gist
+  - jekyll-feed
 
 # Page list
 pages_list:
