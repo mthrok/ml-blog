@@ -5,7 +5,7 @@ permalink:           pretty
 
 # Setup
 title:               "moto's blog"
-tagline:             "Notes on Machine Learning."
+tagline:             "on Machine Learning."
 url:                 https://mthrok.github.io
 paginate:            1
 baseurl:             /ml-blog
