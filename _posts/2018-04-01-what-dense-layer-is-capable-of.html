@@ -5,6 +5,8 @@ date:   2018-04-01 00:00:00 +0000
 categories: deep_learning
 ---
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
 <p>
 Building a new model in Deep Learning is not easy. Figuring out why a model is not acting as expected is difficult. It is important to know how what each component is capable of. Dense layer is one of the most fundamental component of Machine Learning. Here, we explore what it is capable of through series of simple and easy-to-interpret experiments.
 </p>
@@ -14,25 +16,58 @@ Building a new model in Deep Learning is not easy. Figuring out why a model is n
 Let's consider a model that maps one-hot vectors into indices.
 </p>
 
-<center>
-<img src="/ml-blog/assets/2018-04-01/fig1.svg" alt="[[1 0 0][0 1 0][0 0 1]] -> [1 2 3]">
-</center>
+$$
+\begin{bmatrix} 
+[1 & 0 & 0] \\
+[0 & 1 & 0] \\
+[0 & 0 & 1]
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+$$
 
 <p>
 This can be formulated as linear regression. It is easy to write this mapping in equation.
 </p>
 
-<center>
-<img src="/ml-blog/assets/2018-04-01/fig2.svg" alt="X*[1 2 3] -> y">
-</center>
+$$
+\begin{align*}
+\mathbf{x}
+\cdot
+\begin{bmatrix}
+1 \\
+2 \\
+3
+\end{bmatrix}
+\rightarrow
+y\end{align*}
+$$
 
 <p>
-And there are different ways to express the same mapping.
+And there are different ways to express the same mapping using bias term.
 </p>
 
-<center>
-<img src="/ml-blog/assets/2018-04-01/fig3.svg" alt="X*[-1 0 1] + [2 2 2] -> y">
-</center>
+\begin{align*}
+\mathbf{x}
+\cdot
+\begin{bmatrix}
+-1 \\
+0 \\
+1
+\end{bmatrix}
++
+\begin{bmatrix}
+2 \\
+2 \\
+2
+\end{bmatrix}
+\rightarrow
+y
+\end{align*}
 
 <h2>Experiment</h2>
 
@@ -96,9 +131,28 @@ There are couple of interesting this we can observe.
 Extending this to multi dimension, we get the same property on each axis independently.
 </p>
 
-<center>
-<img src="/ml-blog/assets/2018-04-01/fig4.svg" alt="[[1 0 0, 0 1 0][1 0 0, 0 0 1][0 0 1, 1 0 0]] -> [[1 2][1 3][3 1]]">
-</center>
+$$
+\begin{bmatrix} 
+\begin{bmatrix} 
+1 & 0 & 0 \\
+0 & 1 & 0 
+\end{bmatrix} \\
+\begin{bmatrix} 
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix} \\
+\begin{bmatrix} 
+0 & 0 & 1 \\
+1 & 0 & 0
+\end{bmatrix}
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+[1 & 2]\\
+[1 & 3]\\
+[3 & 1]
+\end{bmatrix}
+$$
 
 <center>
   <iframe
@@ -112,4 +166,4 @@ Extending this to multi dimension, we get the same property on each axis indepen
 In the next blog entry, we will explore the revese operation of linear regression, using Dense layer.
 
 <h2>Comments</h2>
-{% include github_comment.html issue="2" %}
+{% include github_comment.html issue="1" %}
