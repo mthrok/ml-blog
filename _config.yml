@@ -7,7 +7,8 @@ permalink:           pretty
 title:               "moto's blog"
 tagline:             "on Machine Learning."
 url:                 https://mthrok.github.io
-paginate:            1
+paginate:            10
+paginate_path:       "blog/page:num"
 baseurl:             /ml-blog
 
 # Assets
