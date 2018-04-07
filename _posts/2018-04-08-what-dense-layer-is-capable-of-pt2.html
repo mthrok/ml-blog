@@ -63,6 +63,10 @@ output_variable = tf.layers.dense(
 {% endhighlight %}
 
 <p>
+  You can find the code for the experiment <a href="https://github.com/mthrok/ml-blog">here</a>.
+</p>
+
+<p>
   How does this model work? If we look at the each dimension of the output vector separately, we notice that they take non-zero value only when input scalar value is in certain region. This is not linear. To break the linear relationship, we pass this data point through an activation function. Then in the second dense layer activated values are combined to form the final input.
 </p>
 
