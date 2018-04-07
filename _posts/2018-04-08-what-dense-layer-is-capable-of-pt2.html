@@ -1,0 +1,144 @@
+---
+layout: post
+title:  "What Dense Layer is Capable of Pt. 2"
+date:   2018-04-08 00:00:00 +0000
+category: dense
+categories: deep_learning
+---
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<p>
+  In <a href="{{ site.baseurl }}{% post_url 2018-04-01-what-dense-layer-is-capable-of %}">the previous post</a>, we built a simple linear regression model that maps one-hot vector to its label value. In this post, we build a model that reverse this operation.
+</p>
+
+<h2>Problem</h2>
+
+<p>
+  Let's build a unit vector from scalar value.
+</p>
+
+$$
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix} 
+[1 & 0 & 0] \\
+[0 & 1 & 0] \\
+[0 & 0 & 1]
+\end{bmatrix}
+$$
+
+<p>
+  This is not linearly solvable. We need to introduce non-linearity that surpress output in parts of regions.
+</p>
+
+$$
+\begin{align}
+\mathbf{h} & = \sigma (
+  x \cdot \mathbf{v} + \mathbf{b}_1
+) \\
+\mathbf{y} & = \mathbf{h} W + \mathbf{b}_2
+\end{align}
+$$
+
+<p>
+  Which can be implemented in Tensorflow as follow.
+</p>
+
+{% highlight python %}
+intermediate_variable = tf.layers.dense(
+    input_variable, units=n_intermediate_dim, use_bias=True,
+    activation=activation)
+
+output_variable = tf.layers.dense(
+    intermediate_variable, units=n_output_dim, use_bias=True,
+)
+{% endhighlight %}
+
+<p>
+  How does this model work? If we look at the each dimension of the output vector separately, we notice that they take non-zero value only when input scalar value is in certain region. This is not linear. To break the linear relationship, we pass this data point through an activation function. Then in the second dense layer activated values are combined to form the final input.
+</p>
+
+<h2>Experiment</h2>
+
+<p>
+  As I run some experiments, it turned out that each activation function has its preferred input value range where it can perform the task better. So in this experiment, linear scaling is added before the first dense layer. Loss type is L2. With L1, the model does not converges to global optima. Optimizer is Adam as Gradient Descent is very slow.
+</p>
+
+<center>
+  <iframe
+    width="630" height="620" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-08/exp1_loss.html">
+  </iframe>
+  <div style="padding-bottom: 1em;">
+    <small>
+      Loss value over training. We see plateaus and sudden improves. Relu family (Relu, Relu6, Softplus, Leaky Relu) stays plateau and not sure if they can converge.<br>
+      Sigmoid and Tanh can converge well. ELU converges as well but was not very robust and scaling has to be performed in a specific way.
+    </small>
+  </div>
+</center>
+
+<center>
+  <iframe
+    width="425" height="555" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-08/exp1_output.html">
+  </iframe>
+  <div style="padding-bottom: 1em;">
+    <small>
+      Model output throught the training. In each image path, each row corresponds to one model output (one-hot encoded vector).
+    </small>
+  </div>
+</center>
+
+<p>
+  What is happening inside? Why are Relu activations fail to converge? Let's take a look into the intermediate layer output.
+</p>
+
+<center>
+  <iframe
+    width="425" height="430" align="middle" frameborder="0"
+    src="/ml-blog/assets/2018-04-08/exp1_intermediate.html">
+  </iframe>
+  <div style="padding-bottom: 1em;">
+    <small>
+      Output from the first dense layer (activation).
+    </small>
+  </div>
+</center>
+
+<p>
+  Each datapoint which is successfully converged, output has unique patterns. For the models which loss converged to zero, zero-crossing point of each intermediate feature's activation function can be found in the visualized range, but for the models which did not converge, some feature's zero-crossing point are outside of visualized range, meaning those features are not cotributing in the next layer.
+</p>
+<p>
+  In case of Tanh and Sigmoid activations, outputs from the intermediate layer take either 0 (-1 for Tanh) or 1. This means that what the model can output is bounded by the intermediate layer capacity.
+</p>
+
+<center>
+  <iframe
+    width="630" height="620" align="middle" frameborder="0"
+    src="{{ site.baseurl }}/assets/2018-04-08/exp2_loss.html">
+  </iframe>
+  <div style="padding-bottom: 1em;">
+    <small>
+      Loss for different number of intermediate features. Loss reaches 0 at 15, which is one smaller than the output dimension. 
+    </small>
+  </div>
+</center>
+<center>
+  <iframe
+    width="400" height="620" align="middle" frameborder="0"
+    src="{{ site.baseurl }}/assets/2018-04-08/exp2_output.html">
+  </iframe>
+</center>
+
+<p>
+So activation functions over N intermediate features combined, the output space is devided into N + 1 regions as follow.
+</p>
+
+<center>
+  <img src="{{ site.baseurl }}/assets/2018-04-08/features.jpg" alt="Combined features.">
+</center>
